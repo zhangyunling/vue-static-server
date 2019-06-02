@@ -2,15 +2,15 @@
  * 静态化
  */
 
-const fs = require("fs");
-const path = require("path");
-const { createBundleRenderer } = require("vue-server-renderer");
+const fs = require('fs');
+const path = require('path');
+const { createBundleRenderer } = require('vue-server-renderer');
 const _root = path.resolve(__dirname, '../dist/');
 const _resolve = file => path.resolve(_root, file);
 
 // 输出的静态文件地址
 const staticHtmlPath = _resolve('public/index.html');
-const tmpHtml = fs.readFileSync(_resolve("public/index.tmp.html"), "utf-8");
+const tmpHtml = fs.readFileSync(_resolve('public/index.tmp.html'), 'utf-8');
 const serverBundle = require(_resolve('public/vue-ssr-server-bundle.json'));
 const clientManifest = require(_resolve('public/vue-ssr-client-manifest.json'));
 let _startSecs = 0;
@@ -24,27 +24,28 @@ if (!serverBundle || !clientManifest) {
 // 静态化
 const renderer = (_bundle, _manifest, query = {}, res) => {
   _startSecs = Date.now();
-  const pageName = query.path == 'app2' ? 'app2/' : '';
+  const pageName = query.path === 'app2' ? 'app2/' : '';
   const pagePath = pageName ? _resolve('public/'+pageName+'index.html') : staticHtmlPath;
   const context = {
-    title: "vue-static("+(query.name || '-')+")",
-    url: "/" + pageName
+    title: 'vue-static('+(query.name || '-')+')',
+    url: '/' + pageName
   };
+
   createBundleRenderer(_bundle, {
     template: tmpHtml,
     clientManifest: _manifest
   }).renderToString(context, (err, html) => {
-    console.log('静态化耗费时间：'+(Date.now() - _startSecs)+"ms");
+    console.log('静态化耗费时间：'+(Date.now() - _startSecs)+'ms');
 
     // 返回
     res.send(html);
     
-    fs.writeFile(pagePath, html, function(err,data){
-      if(err){
-        console.log("writeFile file error");
+    fs.writeFile(pagePath, html, function(_err){
+      if (_err) {
+        console.log('writeFile file error');
         return false;
       }
-      console.log("writeFile succ");
+      console.log('writeFile succ');
     });
   });
 }
@@ -62,13 +63,14 @@ app.get('/create', (req, res) => {
 });
 
 // 静态访问文件
-app.get('*', (req, res, next) => {
+app.get('*', (req, res) => {
   let _url = req.url;
+
   // 做一层代理
-  if(_url.indexOf('.') == -1){
-    res.sendFile(_resolve("public/"+_url + "/index.html"));
+  if (_url.indexOf('.') === -1) {
+    res.sendFile(_resolve('public/'+_url + '/index.html'));
   } else {
-    res.sendFile(_resolve("public/main.js"));
+    res.sendFile(_resolve('public/main.js'));
   }
 })
 

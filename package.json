@@ -1,19 +1,45 @@
 {
   "name": "static-server",
   "version": "1.0.0",
-  "description": "static-server",
-  "author": "z",
+  "description": "vue静态化服务",
+  "author": "zhangyunling",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
-    "start": "cross-env NODE_ENV=production nodemon server/index.js --watch server"
+    "start": "cross-env NODE_ENV=production nodemon server/index.js --watch server",
+    "lint": "eslint server/"
+  },
+  "gitHooks": {
+    "pre-commit": "npm run lint",
+    "commit-msg": "node scripts/verify-commit-msg.js"
   },
   "dependencies": {},
   "devDependencies": {
     "axios": "^0.18.0",
     "cross-env": "^5.2.0",
-    "vue-server-renderer": "^2.6.10",
+    "eslint": "^5.16.0",
+    "express": "^4.17.1",
     "nodemon": "^1.18.9",
     "pm2": "^3.5.1",
-    "express": "^4.17.1"
-  }
+    "vue-server-renderer": "^2.6.10",
+    "yorkie": "^2.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zhangyunling/vue-static-server.git"
+  },
+  "keywords": [
+    "vue-static-server",
+    "static-server"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">= 4.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "package.json",
+    "server/"
+  ]
 }
