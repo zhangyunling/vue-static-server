@@ -8,8 +8,15 @@ const route = require('koa-route');
 const app = new Koa();
 const config = require('../config/index.js');
 
-// 静态化的主函数
+// 静态化服务鉴权，合法性判定
+app.use(route[config.type](`/${config.path}`, async (ctx, next) => {
+  // 把所有的配置信息，挂载到ctx上
+  // 方便后面的中间件使用；
+  ctx.config = config;
+  next();
+}));
 
+// 静态化的主函数
 const staticServer = async (ctx) => {
 	ctx.body = 'Hello World';
   console.log(2);
