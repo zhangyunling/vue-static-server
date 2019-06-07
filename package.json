@@ -4,9 +4,10 @@
   "description": "vue静态化服务",
   "author": "zhangyunling",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
-    "start": "cross-env NODE_ENV=production nodemon server/index.js --watch server",
-    "lint": "eslint server/"
+    "dev": "cross-env NODE_ENV=local nodemon server/index.js --watch server",
+    "start:dev": "cross-env NODE_ENV=dev nodemon server/index.js --watch server",
+    "start:pro": "cross-env NODE_ENV=pro nodemon server/index.js --watch server",
+    "lint": "eslint --fix server/"
   },
   "gitHooks": {
     "pre-commit": "npm run lint",
@@ -18,7 +19,9 @@
     "cross-env": "^5.2.0",
     "eslint": "^5.16.0",
     "koa": "^2.7.0",
+    "koa-bodyparser": "^4.2.1",
     "koa-route": "^3.2.0",
+    "koa2": "^2.0.0-alpha.7",
     "nodemon": "^1.18.9",
     "pm2": "^3.5.1",
     "vue-server-renderer": "^2.6.10",

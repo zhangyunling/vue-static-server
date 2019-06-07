@@ -8,7 +8,7 @@ const env = require('../utils/env.js');
 
 const config = {
 	// 接收请求的地址
-	path: 'create',
+	path: 'vue-static-create',
 
 	// 接收请求的类型
 	// 线上接收post请求，本地开发接收get请求；
