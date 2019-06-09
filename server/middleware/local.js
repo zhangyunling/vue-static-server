@@ -1,13 +1,19 @@
-
+const http = require('http');
+const querystring = require('querystring');
 
 const tools = require('../utils/tools.js');
 const mock = require(tools.resolve('server/json/mock.json'));
-const http = require('http');
+const postData = querystring.stringify(mock);
+
 const reqOption = {
   host : '127.0.0.1',              //测试
   port : 3000,                     //端口     
   path : '',                       //主路径，不变的
-  method : 'POST'
+  method : 'POST',
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Content-Length': Buffer.byteLength(postData)
+  }
 };
 const getTestInfo = () => {
   return new Promise((resolve,reject) => {
@@ -27,7 +33,7 @@ const getTestInfo = () => {
       reject(e.message);
     });
 
-    req.write(JSON.stringify(mock));
+    req.write(postData);
     req.end();
   });
 }
@@ -37,14 +43,7 @@ const devService = {
   port: reqOption.port,
 
   // 静态化渲染前，执行的中间件
-  before: [
-    // 本地开发，使用模拟的JSON来进行页面的渲染；
-    async (ctx, next) => {
-      // console.log('renderData', ctx.renderData);
-      // console.log('config', ctx.config);
-      next();
-    },
-  ],
+  before: [],
 
   // 静态化之后，执行的中间件；
   after: [],
@@ -55,6 +54,13 @@ const devService = {
 
     app.use(route.get('/local-create', async (ctx) => {
       ctx.body = await getTestInfo();
+    }));
+
+    app.use(route.get('/local-create2', async (ctx) => {
+      ctx.body = `<form method = 'post' action = '/vue-static-create'>
+  <input name = "title" value = '这里是标题' />
+  <button type = "submit">提交</button>
+</form>`;
     }));
   }
 };

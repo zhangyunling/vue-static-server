@@ -10,8 +10,8 @@ const devService = {
   before: [
     // 本地开发，使用模拟的JSON来进行页面的渲染；
     async (ctx, next) => {
-      console.log('renderData', ctx.renderData);
-      console.log('config', ctx.config);
+      // console.log('renderData', ctx.renderData);
+      // console.log('config', ctx.config);
       next();
     },
   ],
